@@ -17,8 +17,25 @@ export function loadBag(bag: Bag, usedGifts: GiftId[]) {
             }
         });
 
-    console.warn({
-        unusedWeight: MAX_WEIGHT - currentWeight,
-        unusedVolume: MAX_VOLUME - currentVolume,
-    });
+    const fill = () => {
+        const unusedWeight = MAX_WEIGHT - currentWeight;
+        const unusedVolume = MAX_VOLUME - currentVolume;
+
+        if (unusedWeight > 0 && unusedVolume > 0) {
+            const filteredGifts = data.gifts.filter(
+                (gift) => !usedGifts.concat(bag).some((usedGift) => usedGift === gift.id)
+            );
+            const suitableGift = filteredGifts.find(
+                (gift) => gift.weight <= unusedWeight && gift.volume <= unusedVolume
+            );
+            if (suitableGift) {
+                bag.push(suitableGift.id);
+                currentWeight += suitableGift.weight;
+                currentVolume += suitableGift.volume;
+                fill();
+            }
+        }
+    };
+
+    fill();
 }
