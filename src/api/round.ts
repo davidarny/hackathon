@@ -2,18 +2,22 @@ import axios from "axios";
 import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
 
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
 export function round(moves: Move[], stackOfBags: StackOfBags) {
     axios
         .post(
             "https://datsanta.dats.team/api/round",
             {
-                mapID: import.meta.env.MAP_ID,
+                mapID: process.env.MAP_ID,
                 moves,
                 stackOfBags,
             },
             {
                 headers: {
-                    "X-API-Key": import.meta.env.TOKEN,
+                    "X-API-Key": process.env.TOKEN,
                     "Content-Type": "application/json",
                     "Accept-Encoding": "*",
                 },

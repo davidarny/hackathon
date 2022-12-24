@@ -1,5 +1,5 @@
 import { data } from "../../seed/map";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import styles from "./MapR.module.css";
 import { App } from "../../lib/app";
 import { Move } from "../../types/Move";
@@ -22,19 +22,29 @@ const MapR: FC = () => {
         <circle className={styles.snowArea} cx={area.x} cy={area.y} r={area.r} key={index} />
     ));
 
-    const moves = route.moves
-        .reduce((acc, __, index, array) => {
-            if (index % 2 === 0) {
-                acc.push(array.slice(index, index + 2));
-            }
+    const moves = useMemo(() => {
+        const first = route.moves[0];
+        const moves: Move[] = [first];
+
+        for (let i = 1; i < route.moves.length - 1; i++) {
+            moves.push(route.moves[i]);
+        }
+
+        return moves.reduce((acc, curr, index, array) => {
+            const prev = array[index - 1];
+            const line = (
+                <line className={styles.line} key={index} x1={prev?.x ?? 0} y1={prev?.y ?? 0} x2={curr?.x ?? 0} y2={curr?.y ?? 0} />
+            );
+            acc.push(line);
             return acc;
-        }, [] as Move[][])
-        .map(([from, to], index) => (
-            <line className={styles.line} key={index} x1={from.x} y1={from.y} x2={to.x} y2={to.y} />
-        ));
+        }, [] as JSX.Element[]);
+    }, []);
 
     return (
-        <svg viewBox={`0 0 ${Math.min(MAP_SIZE * aspectRatio, MAP_SIZE)} ${Math.min(MAP_SIZE / aspectRatio, MAP_SIZE)}`} className={styles.map}>
+        <svg
+            viewBox={`0 0 ${Math.min(MAP_SIZE * aspectRatio, MAP_SIZE)} ${Math.min(MAP_SIZE / aspectRatio, MAP_SIZE)}`}
+            className={styles.map}
+        >
             {children}
             {snowAreas}
             {moves}
