@@ -1,13 +1,13 @@
 {
-  "name": "hackaton",
+  "name": "hackathon",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "pretty": "prettier --write src"
+    "pretty": "prettier --write src",
+    "start": "ts-node -O '{\"module\": \"commonjs\"}' src/index.ts"
   },
   "dependencies": {
     "@react-hook/window-size": "^3.1.1",
