@@ -7,11 +7,14 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "pretty": "prettier --write src",
-    "start": "ts-node -O '{\"module\": \"commonjs\"}' src/index.ts"
+    "round": "ts-node -r dotenv/config -O '{\"module\": \"commonjs\"}' src/index.ts",
+    "status": "env $(cat .env) sh -c 'http GET https://datsanta.dats.team/api/round/${0} X-API-Key:$TOKEN'"
   },
   "dependencies": {
     "@react-hook/window-size": "^3.1.1",
+    "@types/node": "^18.11.17",
     "axios": "^1.2.1",
+    "dotenv": "^16.0.3",
     "normalize.css": "^8.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

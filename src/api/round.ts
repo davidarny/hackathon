@@ -1,5 +1,4 @@
 import axios from "axios";
-import { MAP_ID, TOKEN } from "../constants/config";
 import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
 
@@ -8,13 +7,13 @@ export function round(moves: Move[], stackOfBags: StackOfBags) {
         .post(
             "https://datsanta.dats.team/api/round",
             {
-                mapID: MAP_ID,
+                mapID: import.meta.env.MAP_ID,
                 moves,
                 stackOfBags,
             },
             {
                 headers: {
-                    "X-API-Key": TOKEN,
+                    "X-API-Key": import.meta.env.TOKEN,
                     "Content-Type": "application/json",
                     "Accept-Encoding": "*",
                 },

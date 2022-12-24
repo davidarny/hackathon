@@ -1,5 +1,6 @@
 import { data } from "../seed/map";
 import { Bag } from "../types/Bag";
+import { Child } from "../types/Child";
 import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { Route } from "../types/Route";
@@ -18,6 +19,12 @@ export class App {
 
     private readonly snowChildren = data.children.filter((child) => isChildInShow(child));
     private readonly cleanChildren = data.children.filter((child) => !isChildInShow(child));
+
+    private get children() {
+        const values: Child[] = [...this.cleanChildren, ...this.snowChildren];
+        values.sort((a, b) => a.x + a.y - (b.x + b.y));
+        return values;
+    }
 
     constructor() {
         loadBag(this.currentBag, this.usedGifts);
@@ -43,7 +50,7 @@ export class App {
     }
 
     run() {
-        const children = [...this.cleanChildren, ...this.snowChildren];
+        const children = this.children;
 
         buildRoute({
             children,

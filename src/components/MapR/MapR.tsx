@@ -13,7 +13,6 @@ const MapR: FC = () => {
     const [width, height] = useWindowSize();
 
     const aspectRatio = width / height;
-    console.log("🚀 ~ file: MapR.tsx:16 ~ aspectRatio", aspectRatio)
 
     const children = data.children.map((child, index) => (
         <rect width={6} height={6} className={styles.child} x={child.x} y={child.y} key={index} />
