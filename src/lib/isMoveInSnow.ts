@@ -1,10 +1,10 @@
 import { data } from "../seed/map";
-import { Child } from "../types/Child";
+import { Move } from "../types/Move";
 import { pointInCircle } from "./pointInCircle";
 
-export function isChildInShow(child: Child) {
+export function isMoveInSnow(move: Move) {
     return data.snowAreas.some((snowArea) => {
-        const result = pointInCircle([child.x, child.y], [snowArea.x, snowArea.y], snowArea.r);
+        const result = pointInCircle([move.x, move.y], [snowArea.x, snowArea.y], snowArea.r);
         return result === -1 || result === 0;
     });
 }
