@@ -7,6 +7,7 @@ import { StackOfBags } from "../types/StackOfBags";
 import { buildRoute } from "./buildRoute";
 import { loadBag } from "./loadBag";
 import { sortByDistance } from "./sortByDistance";
+import { sortByWeight } from "./sortByWeight";
 
 export class App {
     private readonly moves: Move[] = [];
@@ -21,8 +22,14 @@ export class App {
 
     private get children(): Move[] {
         const values: Move[] = [...data.children];
-        sortByDistance(values, { x: 0, y: 0 });
-        return values;
+        const startPoint = { x: 0, y: 0 };
+        sortByDistance(values, startPoint);
+        const orderedValues = sortByWeight(values);
+        const zeroWeightValues = orderedValues.filter((value) => value.weight === 0);
+        const oneWeightValues = orderedValues.filter((value) => value.weight === 1);
+        sortByDistance(zeroWeightValues, startPoint);
+        sortByDistance(oneWeightValues, startPoint);
+        return [...zeroWeightValues, ...oneWeightValues].map((value) => ({ x: value.x, y: value.y } as Move));
     }
 
     constructor() {
