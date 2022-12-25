@@ -4,8 +4,8 @@ import { Child } from "../types/Child";
 import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
-import { createGraph } from "./createGraph";
 import { loadBag } from "./loadBag";
+import { sortByDistance } from "./sortByDistance";
 
 interface RunParams {
     children: Child[];
@@ -24,9 +24,17 @@ export function buildRoute({ children, stackOfBags, currentBag, moves, usedGifts
 
     currentBag.forEach((gift) => {
         const currentChild = children.shift();
+        const prevMove = moves[moves.length - 1];
 
         if (!currentChild) {
             return;
+        }
+
+        if (prevMove) {
+            const movesToSort = [...children];
+            sortByDistance(movesToSort, currentChild);
+            children.length = 0;
+            children.push(...movesToSort);
         }
 
         moves.push(currentChild);

@@ -18,11 +18,11 @@ export class App {
 
     private currentBag: Bag = [];
 
-    private readonly snowChildren = data.children.filter((child) => isChildInSnow(child));
-    private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
+    // private readonly snowChildren = data.children.filter((child) => isChildInSnow(child));
+    // private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
 
     private get children() {
-        const values: Child[] = [...this.cleanChildren, ...this.snowChildren];
+        const values: Child[] = [...data.children];
         sortByDistance(values, { x: 0, y: 0 });
         return values;
     }
@@ -32,8 +32,8 @@ export class App {
 
         console.log({
             currentBag: this.currentBag,
-            snowChildren: this.snowChildren,
-            cleanChildren: this.cleanChildren,
+            // snowChildren: this.snowChildren,
+            // cleanChildren: this.cleanChildren,
         });
     }
 
