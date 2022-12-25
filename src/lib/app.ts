@@ -1,12 +1,10 @@
 import { data } from "../seed/map";
 import { Bag } from "../types/Bag";
-import { Child } from "../types/Child";
 import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { Route } from "../types/Route";
 import { StackOfBags } from "../types/StackOfBags";
 import { buildRoute } from "./buildRoute";
-import { isChildInSnow } from "./isChildInSnow";
 import { loadBag } from "./loadBag";
 import { sortByDistance } from "./sortByDistance";
 
@@ -21,8 +19,8 @@ export class App {
     // private readonly snowChildren = data.children.filter((child) => isChildInSnow(child));
     // private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
 
-    private get children() {
-        const values: Child[] = [...data.children];
+    private get children(): Move[] {
+        const values: Move[] = [...data.children];
         sortByDistance(values, { x: 0, y: 0 });
         return values;
     }
@@ -51,10 +49,8 @@ export class App {
     }
 
     run() {
-        const children = this.children;
-
         buildRoute({
-            children,
+            children: this.children,
             currentBag: this.currentBag,
             moves: this.moves,
             stackOfBags: this.stackOfBags,

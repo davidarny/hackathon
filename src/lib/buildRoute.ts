@@ -1,14 +1,14 @@
 import { data } from "../seed/map";
 import { Bag } from "../types/Bag";
-import { Child } from "../types/Child";
 import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
 import { loadBag } from "./loadBag";
 import { sortByDistance } from "./sortByDistance";
+import { sortByWeight } from "./sortByWeight";
 
 interface RunParams {
-    children: Child[];
+    children: Move[];
     stackOfBags: StackOfBags;
     currentBag: Bag;
     moves: Move[];

@@ -1,7 +1,6 @@
 import { data } from "../seed/map";
 import { GraphNode, WeightedGraph } from "./graph";
-import { isChildInSnow } from "./isChildInSnow";
-import { pointInCircle } from "./pointInCircle";
+import { isMoveInSnow } from "./isMoveInSnow";
 
 const MAP_SIZE = 10_000;
 const FACTOR = 25;
@@ -21,9 +20,6 @@ export function createGraph() {
     }
 
     nodes.forEach((row, ind1, array1) => {
-        const isInSnow = (node: GraphNode) =>
-            data.snowAreas.some((area) => pointInCircle([node.x, node.y], [area.x, area.y], area.r));
-
         row.forEach((node, ind2, array2) => {
             const from = node;
 
@@ -32,17 +28,17 @@ export function createGraph() {
             const left = array2[ind2 - FACTOR];
             const bottom = array1[ind1 - FACTOR]?.[ind2 - FACTOR];
 
-            top && graph.addEdge(from, top, isInSnow(node) || isInSnow(top) ? FACTOR : 0);
-            right && graph.addEdge(from, right, isInSnow(node) || isInSnow(right) ? FACTOR : 0);
-            left && graph.addEdge(left, from, isInSnow(node) || isInSnow(left) ? FACTOR : 0);
-            bottom && graph.addEdge(bottom, from, isInSnow(node) || isInSnow(bottom) ? FACTOR : 0);
+            top && graph.addEdge(from, top, isMoveInSnow(node) || isMoveInSnow(top) ? FACTOR : 0);
+            right && graph.addEdge(from, right, isMoveInSnow(node) || isMoveInSnow(right) ? FACTOR : 0);
+            left && graph.addEdge(left, from, isMoveInSnow(node) || isMoveInSnow(left) ? FACTOR : 0);
+            bottom && graph.addEdge(bottom, from, isMoveInSnow(node) || isMoveInSnow(bottom) ? FACTOR : 0);
         });
     });
 
     let children = [...data.children];
 
-    const snowChildren = children.filter((child) => isChildInSnow(child));
-    const cleanChildren = children.filter((child) => !isChildInSnow(child));
+    const snowChildren = children.filter((child) => isMoveInSnow(child));
+    const cleanChildren = children.filter((child) => !isMoveInSnow(child));
 
     children = [...cleanChildren, ...snowChildren];
 
@@ -60,16 +56,12 @@ export function createGraph() {
         const left = nodes[topX]?.[child.y];
         const right = nodes[bottomX]?.[child.y];
 
-        const isInSnow = data.snowAreas.some((area) =>
-            pointInCircle([child.x, child.y], [area.x, area.y], area.r)
-        );
-
         graph.addVertex(child);
 
-        top && graph.addEdge(top, child, isInSnow ? FACTOR : 0);
-        bottom && graph.addEdge(child, bottom, isInSnow ? FACTOR : 0);
-        left && graph.addEdge(left, child, isInSnow ? FACTOR : 0);
-        right && graph.addEdge(child, right, isInSnow ? FACTOR : 0);
+        top && graph.addEdge(top, child, isMoveInSnow(child) ? FACTOR : 0);
+        bottom && graph.addEdge(child, bottom, isMoveInSnow(child) ? FACTOR : 0);
+        left && graph.addEdge(left, child, isMoveInSnow(child) ? FACTOR : 0);
+        right && graph.addEdge(child, right, isMoveInSnow(child) ? FACTOR : 0);
     });
 
     return graph;
