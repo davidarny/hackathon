@@ -15,7 +15,7 @@ const MapR: FC = () => {
     const aspectRatio = width / height;
 
     const children = data.children.map((child, index) => (
-        <rect width={6} height={6} className={styles.child} x={child.x} y={child.y} key={index} />
+        <circle r={5} className={styles.child} cx={child.x} cy={child.y} key={index} />
     ));
 
     const snowAreas = data.snowAreas.map((area, index) => (
