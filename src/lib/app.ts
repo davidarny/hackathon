@@ -1,13 +1,13 @@
 import { data } from "../seed/map";
 import { Bag } from "../types/Bag";
-import { Child } from "../types/Child";
 import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { Route } from "../types/Route";
 import { StackOfBags } from "../types/StackOfBags";
 import { buildRoute } from "./buildRoute";
-import { isChildInShow } from "./isChildInShow";
 import { loadBag } from "./loadBag";
+import { sortByDistance } from "./sortByDistance";
+import { sortByWeight } from "./sortByWeight";
 
 export class App {
     private readonly moves: Move[] = [];
@@ -17,13 +17,19 @@ export class App {
 
     private currentBag: Bag = [];
 
-    private readonly snowChildren = data.children.filter((child) => isChildInShow(child));
-    private readonly cleanChildren = data.children.filter((child) => !isChildInShow(child));
+    // private readonly snowChildren = data.children.filter((child) => isChildInSnow(child));
+    // private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
 
-    private get children() {
-        const values: Child[] = [...this.cleanChildren, ...this.snowChildren];
-        values.sort((a, b) => a.x + a.y - (b.x + b.y));
-        return values;
+    private get children(): Move[] {
+        const values: Move[] = [...data.children];
+        const startPoint = { x: 0, y: 0 };
+        sortByDistance(values, startPoint);
+        const orderedValues = sortByWeight(values);
+        const zeroWeightValues = orderedValues.filter((value) => value.weight === 0);
+        const oneWeightValues = orderedValues.filter((value) => value.weight === 1);
+        sortByDistance(zeroWeightValues, startPoint);
+        sortByDistance(oneWeightValues, startPoint);
+        return [...zeroWeightValues, ...oneWeightValues].map((value) => ({ x: value.x, y: value.y } as Move));
     }
 
     constructor() {
@@ -31,8 +37,8 @@ export class App {
 
         console.log({
             currentBag: this.currentBag,
-            snowChildren: this.snowChildren,
-            cleanChildren: this.cleanChildren,
+            // snowChildren: this.snowChildren,
+            // cleanChildren: this.cleanChildren,
         });
     }
 
@@ -50,10 +56,8 @@ export class App {
     }
 
     run() {
-        const children = this.children;
-
         buildRoute({
-            children,
+            children: this.children,
             currentBag: this.currentBag,
             moves: this.moves,
             stackOfBags: this.stackOfBags,
