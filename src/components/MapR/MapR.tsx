@@ -4,6 +4,7 @@ import styles from "./MapR.module.css";
 import { App } from "../../lib/app";
 import { Move } from "../../types/Move";
 import { useWindowSize } from "@react-hook/window-size";
+import { nanoid } from "nanoid";
 
 const MAP_SIZE = 10_000;
 
@@ -15,11 +16,11 @@ const MapR: FC = () => {
     const aspectRatio = width / height;
 
     const children = data.children.map((child, index) => (
-        <circle r={5} className={styles.child} cx={child.x} cy={child.y} key={index} />
+        <circle r={5} className={styles.child} cx={child.x} cy={child.y} key={nanoid()} />
     ));
 
-    const snowAreas = data.snowAreas.map((area, index) => (
-        <circle className={styles.snowArea} cx={area.x} cy={area.y} r={area.r} key={index} />
+    const snowAreas = data.snowAreas.map((area) => (
+        <circle className={styles.snowArea} cx={area.x} cy={area.y} r={area.r} key={nanoid()} />
     ));
 
     const moves = useMemo(() => {
@@ -30,16 +31,15 @@ const MapR: FC = () => {
             moves.push(route.moves[i]);
         }
 
-        return moves.reduce((acc, curr, index, array) => {
+        return moves.reduce<JSX.Element[]>((acc, curr, index, array) => {
             const prev = array[index - 1];
             if (!prev) {
                 return acc;
             }
             const line = (
                 <line
-                    strokeWidth={4}
                     className={styles.line}
-                    key={index}
+                    key={nanoid()}
                     x1={prev?.x ?? 0}
                     y1={prev?.y ?? 0}
                     x2={curr?.x ?? 0}
@@ -48,7 +48,7 @@ const MapR: FC = () => {
             );
             acc.push(line);
             return acc;
-        }, [] as JSX.Element[]);
+        }, []);
     }, []);
 
     return (

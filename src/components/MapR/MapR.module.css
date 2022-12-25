@@ -8,11 +8,18 @@
     fill: rgba(255, 255, 255, 0.1);
 }
 
+.snowAreaBorder {
+    stroke: rgba(0, 0, 255, 1);
+    fill: none;
+    stroke-width: 6px;
+}
+
 .child {
     fill: rgb(255, 0, 0);
 }
 
 .line {
-    stroke: rgba(0, 255, 26, 0.5);
+stroke: rgba(0, 255, 26, 0.5);
+stroke-width: 4px;
 }
 
