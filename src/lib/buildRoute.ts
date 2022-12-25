@@ -4,6 +4,7 @@ import { Child } from "../types/Child";
 import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
+import { createGraph } from "./createGraph";
 import { loadBag } from "./loadBag";
 
 interface RunParams {
@@ -29,6 +30,7 @@ export function buildRoute({ children, stackOfBags, currentBag, moves, usedGifts
         }
 
         moves.push(currentChild);
+
         usedGifts.push(gift);
         lastBag.push(gift);
     });

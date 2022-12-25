@@ -6,8 +6,9 @@ import { Move } from "../types/Move";
 import { Route } from "../types/Route";
 import { StackOfBags } from "../types/StackOfBags";
 import { buildRoute } from "./buildRoute";
-import { isChildInShow } from "./isChildInShow";
+import { isChildInSnow } from "./isChildInSnow";
 import { loadBag } from "./loadBag";
+import { sortByDistance } from "./sortByDistance";
 
 export class App {
     private readonly moves: Move[] = [];
@@ -17,12 +18,12 @@ export class App {
 
     private currentBag: Bag = [];
 
-    private readonly snowChildren = data.children.filter((child) => isChildInShow(child));
-    private readonly cleanChildren = data.children.filter((child) => !isChildInShow(child));
+    private readonly snowChildren = data.children.filter((child) => isChildInSnow(child));
+    private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
 
     private get children() {
         const values: Child[] = [...this.cleanChildren, ...this.snowChildren];
-        values.sort((a, b) => a.x + a.y - (b.x + b.y));
+        sortByDistance(values, { x: 0, y: 0 });
         return values;
     }
 
