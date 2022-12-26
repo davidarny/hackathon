@@ -18,11 +18,6 @@ export class Phase2 implements App<Order> {
     constructor() {
         mapValues(this.groupedPrizes, (prizes) => sortPrizesByPrice(prizes));
         mapValues(this.groupedChildren, (children) => sortChildrenByAge(children));
-
-        console.log({
-            groupedPrizes: this.groupedPrizes,
-            groupedChildren: this.groupedChildren,
-        });
     }
 
     run(): void {

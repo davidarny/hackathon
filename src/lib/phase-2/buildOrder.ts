@@ -1,11 +1,11 @@
-import { groupBy, keyBy, sortBy, sum, zip } from "lodash";
+import { groupBy, keyBy, sample, shuffle, sortBy, sum, zip } from "lodash";
 import { MAX_PRICE } from "../../constants/app";
+import { categories } from "../../constants/categories";
 import { children } from "../../seed/phase-2/children";
 import { prizes } from "../../seed/phase-2/prizes";
 import { Order } from "../../types/phase-2/Order";
 import { Prize, PrizeType } from "../../types/phase-2/Prize";
 import { Child, ChildGender } from "../../types/shared/Child";
-import { getBestCategory } from "./getBestCategory";
 
 interface BuildOrderOption {
     children: Record<ChildGender, Child[]>;
@@ -22,8 +22,10 @@ export function buildOrder({ children, prizes }: BuildOrderOption) {
 
     let currentPrice = 0;
 
+    const shuffledCategories = shuffle(categories);
+
     const buildGenderRoute = (child: Child) => {
-        const category = getBestCategory(child, prizes)!;
+        const category = sample(shuffledCategories)!;
         const prize = prizes[category].shift();
 
         if (!prize) {
