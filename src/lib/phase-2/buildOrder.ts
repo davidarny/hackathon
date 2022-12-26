@@ -1,4 +1,4 @@
-import { isEmpty, keyBy, sum, zip } from "lodash";
+import { groupBy, keyBy, sortBy, sum, zip } from "lodash";
 import { MAX_PRICE } from "../../constants/app";
 import { children } from "../../seed/phase-2/children";
 import { prizes } from "../../seed/phase-2/prizes";
@@ -23,11 +23,7 @@ export function buildOrder({ children, prizes }: BuildOrderOption) {
     let currentPrice = 0;
 
     const buildGenderRoute = (child: Child) => {
-        let category = getBestCategory(child)!;
-        if (isEmpty(prizes[category])) {
-            category = getBestCategory()!;
-        }
-
+        const category = getBestCategory(child, prizes)!;
         const prize = prizes[category].shift();
 
         if (!prize) {
@@ -61,5 +57,52 @@ export function buildOrder({ children, prizes }: BuildOrderOption) {
         totalPrice: sum(order.presentingGifts.map((gift) => prizesMap[gift.giftID]!.price)),
     });
 
-    return order;
+    const unfoldedOrder = order.presentingGifts.map((gift) => {
+        const child = childrenMap[gift.childID]!;
+        const prize = prizesMap[gift.giftID]!;
+
+        return {
+            childId: child.id,
+            childAge: child.age,
+            childGender: child.gender,
+            giftId: prize.id,
+            giftPrice: prize.price,
+            giftType: prize.type,
+        };
+    });
+
+    const orderByGender = groupBy(sortBy(unfoldedOrder, "giftPrice"), "childGender");
+    const malesSortedByAge = sortBy(orderByGender.male, "childAge");
+    const femalesSortedByAge = sortBy(orderByGender.female, "childAge");
+
+    const reShuffledOrder: Order = {
+        presentingGifts: [
+            ...malesSortedByAge.map((child) => ({
+                childID: child.childId,
+                giftID: orderByGender[child.childGender]!.shift()!.giftId,
+            })),
+            ...femalesSortedByAge.map((child) => ({
+                childID: child.childId,
+                giftID: orderByGender[child.childGender]!.shift()!.giftId,
+            })),
+        ],
+    };
+
+    const unfoldedReShuffledOrder = reShuffledOrder.presentingGifts.map((gift) => {
+        const child = childrenMap[gift.childID]!;
+        const prize = prizesMap[gift.giftID]!;
+
+        return {
+            childId: child.id,
+            childAge: child.age,
+            childGender: child.gender,
+            giftId: prize.id,
+            giftPrice: prize.price,
+            giftType: prize.type,
+        };
+    });
+
+    console.table(unfoldedReShuffledOrder);
+
+    return reShuffledOrder;
 }
