@@ -5,7 +5,6 @@ import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
 import { loadBag } from "./loadBag";
 import { sortByDistance } from "./sortByDistance";
-import { sortByWeight } from "./sortByWeight";
 
 interface RunParams {
     children: Move[];

@@ -15,7 +15,7 @@ const MapR: FC = () => {
 
     const aspectRatio = width / height;
 
-    const children = data.children.map((child, index) => (
+    const children = data.children.map((child) => (
         <circle r={5} className={styles.child} cx={child.x} cy={child.y} key={nanoid()} />
     ));
 

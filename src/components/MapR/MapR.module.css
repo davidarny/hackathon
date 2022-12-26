@@ -23,3 +23,7 @@ stroke: rgba(0, 255, 26, 0.5);
 stroke-width: 4px;
 }
 
+.line.home {
+    stroke: rgba(255, 0, 81, 1);
+}
+
