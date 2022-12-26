@@ -1,19 +1,17 @@
 import axios from "axios";
 
 import * as dotenv from "dotenv";
-import { Move } from "../types/phase-1/Move";
-import { StackOfBags } from "../types/phase-1/StackOfBags";
+import { Order } from "../types/phase-2/Order";
 
 dotenv.config();
 
-export function round(moves: Move[], stackOfBags: StackOfBags) {
+export function round2(order: Order) {
     axios
         .post(
-            "https://datsanta.dats.team/api/round",
+            "https://datsanta.dats.team/api/round2",
             {
                 mapID: process.env.MAP_ID,
-                moves,
-                stackOfBags,
+                presentingGifts: order.presentingGifts,
             },
             {
                 headers: {

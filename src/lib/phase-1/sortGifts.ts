@@ -1,5 +1,5 @@
-import { Gift } from "../types/Gift";
-import { Move } from "../types/Move";
+import { Gift } from "../../types/phase-1/Gift";
+import { Move } from "../../types/phase-1/Move";
 import { distance } from "./distance";
 
 export function sortGifts(gifts: Gift[]) {

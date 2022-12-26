@@ -1,5 +1,5 @@
-import { Move } from "../types/Move";
-import { MoveWithWeight } from "../types/MoveWithWeight";
+import { Move } from "../../types/phase-1/Move";
+import { MoveWithWeight } from "../../types/phase-1/MoveWithWeight";
 import { isMoveInSnow } from "./isMoveInSnow";
 
 export function sortByWeight(moves: Move[]): MoveWithWeight[] {
@@ -12,5 +12,4 @@ export function sortByWeight(moves: Move[]): MoveWithWeight[] {
             };
         })
         .sort((a, b) => a.weight - b.weight);
-    // .map((move) => ({ x: move.x, y: move.y } as Move));
 }

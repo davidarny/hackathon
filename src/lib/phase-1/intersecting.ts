@@ -1,5 +1,5 @@
-import { Move } from "../types/Move";
-import { SnowArea } from "../types/SnowArea";
+import { Move } from "../../types/phase-1/Move";
+import { SnowArea } from "../../types/phase-1/SnowArea";
 
 const sqr = (x: number) => x * x;
 

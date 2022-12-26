@@ -1,4 +1,4 @@
-import { Prize } from "../types/Prize";
+import { Prize } from "../../types/phase-2/Prize";
 
 export const prizes: Prize[] = [
     {

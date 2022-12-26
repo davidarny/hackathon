@@ -1,4 +1,4 @@
-import { Move } from "../types/Move";
+import { Move } from "../../types/phase-1/Move";
 import { distance } from "./distance";
 
 export function sortByDistance(coordinates: Move[], point: Move) {

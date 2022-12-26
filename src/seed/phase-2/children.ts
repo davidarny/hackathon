@@ -1,6 +1,6 @@
-import { Child } from "../types/Child";
+import { Child } from "../../types/shared/Child";
 
-export const childrens: Child[] = [
+export const children: Child[] = [
     {
         id: 1,
         gender: "female",

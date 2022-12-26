@@ -1,12 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./components/MapR";
 
 import "./main.css";
 import "normalize.css";
+import { Phase2 } from "./core/Phase2";
 
-ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
-    <React.StrictMode>
-        <App />
-    </React.StrictMode>
-);
+const app = new Phase2();
+app.run();
+const order = app.build();
+app.cleanup();
+
+console.log({ order });
+
+ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(<React.StrictMode />);

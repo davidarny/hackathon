@@ -1,5 +1,5 @@
-import { ChildGender } from "../types/Child";
-import { PrizeType } from "../types/Prize";
+import { ChildGender } from "../types/shared/Child";
+import { PrizeType } from "../types/phase-2/Prize";
 
 export type Categories = Record<ChildGender | "common", PrizeType[]>;
 

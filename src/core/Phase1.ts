@@ -1,15 +1,16 @@
-import { data } from "../seed/map";
-import { Bag } from "../types/Bag";
-import { GiftId } from "../types/Gift";
-import { Move } from "../types/Move";
-import { Route } from "../types/Route";
-import { StackOfBags } from "../types/StackOfBags";
-import { buildRoute } from "./buildRoute";
-import { loadBag } from "./loadBag";
-import { sortByDistance } from "./sortByDistance";
-import { sortByWeight } from "./sortByWeight";
+import { buildRoute } from "../lib/phase-1/buildRoute";
+import { loadBag } from "../lib/phase-1/loadBag";
+import { sortByDistance } from "../lib/phase-1/sortByDistance";
+import { sortByWeight } from "../lib/phase-1/sortByWeight";
+import { map } from "../seed/phase-1/map";
+import { Bag } from "../types/phase-1/Bag";
+import { GiftId } from "../types/phase-1/Gift";
+import { Move } from "../types/phase-1/Move";
+import { Route } from "../types/phase-1/Route";
+import { StackOfBags } from "../types/phase-1/StackOfBags";
+import { App } from "../types/shared/App";
 
-export class App {
+export class Phase1 implements App<Route> {
     private readonly moves: Move[] = [];
     private readonly stackOfBags: StackOfBags = [[]];
 
@@ -17,11 +18,8 @@ export class App {
 
     private currentBag: Bag = [];
 
-    // private readonly snowChildren = data.children.filter((child) => isChildInSnow(child));
-    // private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
-
     private get children(): Move[] {
-        const values: Move[] = [...data.children];
+        const values: Move[] = [...map.children];
         const startPoint = { x: 0, y: 0 };
         sortByDistance(values, startPoint);
         const orderedValues = sortByWeight(values);
@@ -34,12 +32,7 @@ export class App {
 
     constructor() {
         loadBag(this.currentBag, this.usedGifts);
-
-        console.log({
-            currentBag: this.currentBag,
-            // snowChildren: this.snowChildren,
-            // cleanChildren: this.cleanChildren,
-        });
+        console.log({ currentBag: this.currentBag });
     }
 
     cleanup() {
@@ -74,7 +67,7 @@ export class App {
         return this;
     }
 
-    getRoute(): Route {
+    build() {
         return {
             moves: [...this.moves],
             stackOfBags: [...this.stackOfBags],

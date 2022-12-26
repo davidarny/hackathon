@@ -1,25 +1,25 @@
-import { data } from "../../seed/map";
+import { map } from "../../seed/phase-1/map";
 import { FC, useMemo, useState } from "react";
 import styles from "./MapR.module.css";
-import { App } from "../../lib/app";
-import { Move } from "../../types/Move";
+import { Phase1 } from "../../core/Phase1";
 import { useWindowSize } from "@react-hook/window-size";
 import { nanoid } from "nanoid";
+import { Move } from "../../types/phase-1/Move";
 
 const MAP_SIZE = 10_000;
 
 const MapR: FC = () => {
-    const [route] = useState(() => new App().run().getRoute());
+    const [route] = useState(() => new Phase1().run().build());
 
     const [width, height] = useWindowSize();
 
     const aspectRatio = width / height;
 
-    const children = data.children.map((child) => (
+    const children = map.children.map((child) => (
         <circle r={5} className={styles.child} cx={child.x} cy={child.y} key={nanoid()} />
     ));
 
-    const snowAreas = data.snowAreas.map((area) => (
+    const snowAreas = map.snowAreas.map((area) => (
         <circle className={styles.snowArea} cx={area.x} cy={area.y} r={area.r} key={nanoid()} />
     ));
 

@@ -1,3 +1,5 @@
+export type PrizeId = number;
+
 export type PrizeType =
     | "constructors"
     | "dolls"
@@ -14,7 +16,7 @@ export type PrizeType =
     | "clothes";
 
 export interface Prize {
-    id: number;
+    id: PrizeId;
     type: PrizeType;
     price: number;
 }

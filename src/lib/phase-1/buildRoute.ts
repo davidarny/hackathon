@@ -1,8 +1,8 @@
-import { data } from "../seed/map";
-import { Bag } from "../types/Bag";
-import { GiftId } from "../types/Gift";
-import { Move } from "../types/Move";
-import { StackOfBags } from "../types/StackOfBags";
+import { map } from "../../seed/phase-1/map";
+import { Bag } from "../../types/phase-1/Bag";
+import { GiftId } from "../../types/phase-1/Gift";
+import { Move } from "../../types/phase-1/Move";
+import { StackOfBags } from "../../types/phase-1/StackOfBags";
 import { loadBag } from "./loadBag";
 import { sortByDistance } from "./sortByDistance";
 
@@ -44,7 +44,7 @@ export function buildRoute({ children, stackOfBags, currentBag, moves, usedGifts
 
     moves.push({ x: 0, y: 0 });
 
-    if (usedGifts.length !== data.gifts.length) {
+    if (usedGifts.length !== map.gifts.length) {
         currentBag = [];
         stackOfBags.push([]);
         loadBag(currentBag, usedGifts);

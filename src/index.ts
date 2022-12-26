@@ -1,12 +1,9 @@
-import { round } from "./api/round";
-import { App } from "./lib/app";
+import { round2 } from "./api/round2";
+import { Phase2 } from "./core/Phase2";
 
-const app = new App();
-
+const app = new Phase2();
 app.run();
-
-const route = app.getRoute();
-
+const order = app.build();
 app.cleanup();
 
-round(route.moves, route.stackOfBags);
+round2(order);

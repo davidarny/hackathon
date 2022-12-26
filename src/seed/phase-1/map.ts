@@ -10,7 +10,7 @@ export interface Map {
     children: Child[];
 }
 
-export const data: Map = {
+export const map: Map = {
     gifts: [
         { id: 1, weight: 12, volume: 5 },
         { id: 2, weight: 9, volume: 4 },
