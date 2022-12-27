@@ -61,53 +61,52 @@ export function buildOrder({ children, prizes }: BuildOrderOption) {
         totalPrice: sum(order.presentingGifts.map((gift) => prizesMap[gift.giftID]!.price)),
     });
 
-    return order;
-    // const unfoldedOrder = order.presentingGifts.map((gift) => {
-    //     const child = childrenMap[gift.childID]!;
-    //     const prize = prizesMap[gift.giftID]!;
+    const unfoldedOrder = order.presentingGifts.map((gift) => {
+        const child = childrenMap[gift.childID]!;
+        const prize = prizesMap[gift.giftID]!;
 
-    //     return {
-    //         childId: child.id,
-    //         childAge: child.age,
-    //         childGender: child.gender,
-    //         giftId: prize.id,
-    //         giftPrice: prize.price,
-    //         giftType: prize.type,
-    //     };
-    // });
+        return {
+            childId: child.id,
+            childAge: child.age,
+            childGender: child.gender,
+            giftId: prize.id,
+            giftPrice: prize.price,
+            giftType: prize.type,
+        };
+    });
 
-    // const orderByGender = groupBy(sortBy(unfoldedOrder, "giftPrice"), "childGender");
-    // const malesSortedByAge = sortBy(orderByGender.male, "childAge");
-    // const femalesSortedByAge = sortBy(orderByGender.female, "childAge");
+    const orderByGender = groupBy(sortBy(unfoldedOrder, "giftPrice"), "childGender");
+    const malesSortedByAge = sortBy(orderByGender.male, "childAge");
+    const femalesSortedByAge = sortBy(orderByGender.female, "childAge");
 
-    // const reShuffledOrder: Order = {
-    //     presentingGifts: [
-    //         ...malesSortedByAge.map((child) => ({
-    //             childID: child.childId,
-    //             giftID: orderByGender[child.childGender]!.shift()!.giftId,
-    //         })),
-    //         ...femalesSortedByAge.map((child) => ({
-    //             childID: child.childId,
-    //             giftID: orderByGender[child.childGender]!.shift()!.giftId,
-    //         })),
-    //     ],
-    // };
+    const reShuffledOrder: Order = {
+        presentingGifts: [
+            ...malesSortedByAge.map((child) => ({
+                childID: child.childId,
+                giftID: orderByGender[child.childGender]!.shift()!.giftId,
+            })),
+            ...femalesSortedByAge.map((child) => ({
+                childID: child.childId,
+                giftID: orderByGender[child.childGender]!.shift()!.giftId,
+            })),
+        ],
+    };
 
-    // const unfoldedReShuffledOrder = reShuffledOrder.presentingGifts.map((gift) => {
-    //     const child = childrenMap[gift.childID]!;
-    //     const prize = prizesMap[gift.giftID]!;
+    const unfoldedReShuffledOrder = reShuffledOrder.presentingGifts.map((gift) => {
+        const child = childrenMap[gift.childID]!;
+        const prize = prizesMap[gift.giftID]!;
 
-    //     return {
-    //         childId: child.id,
-    //         childAge: child.age,
-    //         childGender: child.gender,
-    //         giftId: prize.id,
-    //         giftPrice: prize.price,
-    //         giftType: prize.type,
-    //     };
-    // });
+        return {
+            childId: child.id,
+            childAge: child.age,
+            childGender: child.gender,
+            giftId: prize.id,
+            giftPrice: prize.price,
+            giftType: prize.type,
+        };
+    });
 
-    // console.table(unfoldedReShuffledOrder);
+    console.table(unfoldedReShuffledOrder);
 
-    // return reShuffledOrder;
+    return reShuffledOrder;
 }
