@@ -12,4 +12,4 @@ const main = () => {
 
 main();
 
-setInterval(() => main(), 6 * 60 * 1000); // every 6 minutes
+// setInterval(() => main(), 6 * 60 * 1000); // every 6 minutes

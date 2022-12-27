@@ -1,4 +1,4 @@
-import { groupBy, keyBy, sample, shuffle, sortBy, sum, zip } from "lodash";
+import { groupBy, isEmpty, keyBy, sample, shuffle, sortBy, sum, zip } from "lodash";
 import { MAX_PRICE } from "../../constants/app";
 import { categories } from "../../constants/categories";
 import { children } from "../../seed/phase-2/children";
@@ -6,6 +6,7 @@ import { prizes } from "../../seed/phase-2/prizes";
 import { Order } from "../../types/phase-2/Order";
 import { Prize, PrizeType } from "../../types/phase-2/Prize";
 import { Child, ChildGender } from "../../types/shared/Child";
+import { getBestCategory } from "./getBestCatrgory";
 
 interface BuildOrderOption {
     children: Record<ChildGender, Child[]>;
@@ -22,10 +23,11 @@ export function buildOrder({ children, prizes }: BuildOrderOption) {
 
     let currentPrice = 0;
 
-    const shuffledCategories = shuffle(categories);
-
     const buildGenderRoute = (child: Child) => {
-        const category = sample(shuffledCategories)!;
+        let category = getBestCategory(child)!;
+        if (isEmpty(prizes[category])) {
+            category = getBestCategory()!;
+        }
         const prize = prizes[category].shift();
 
         if (!prize) {
@@ -59,52 +61,53 @@ export function buildOrder({ children, prizes }: BuildOrderOption) {
         totalPrice: sum(order.presentingGifts.map((gift) => prizesMap[gift.giftID]!.price)),
     });
 
-    const unfoldedOrder = order.presentingGifts.map((gift) => {
-        const child = childrenMap[gift.childID]!;
-        const prize = prizesMap[gift.giftID]!;
+    return order;
+    // const unfoldedOrder = order.presentingGifts.map((gift) => {
+    //     const child = childrenMap[gift.childID]!;
+    //     const prize = prizesMap[gift.giftID]!;
 
-        return {
-            childId: child.id,
-            childAge: child.age,
-            childGender: child.gender,
-            giftId: prize.id,
-            giftPrice: prize.price,
-            giftType: prize.type,
-        };
-    });
+    //     return {
+    //         childId: child.id,
+    //         childAge: child.age,
+    //         childGender: child.gender,
+    //         giftId: prize.id,
+    //         giftPrice: prize.price,
+    //         giftType: prize.type,
+    //     };
+    // });
 
-    const orderByGender = groupBy(sortBy(unfoldedOrder, "giftPrice"), "childGender");
-    const malesSortedByAge = sortBy(orderByGender.male, "childAge");
-    const femalesSortedByAge = sortBy(orderByGender.female, "childAge");
+    // const orderByGender = groupBy(sortBy(unfoldedOrder, "giftPrice"), "childGender");
+    // const malesSortedByAge = sortBy(orderByGender.male, "childAge");
+    // const femalesSortedByAge = sortBy(orderByGender.female, "childAge");
 
-    const reShuffledOrder: Order = {
-        presentingGifts: [
-            ...malesSortedByAge.map((child) => ({
-                childID: child.childId,
-                giftID: orderByGender[child.childGender]!.shift()!.giftId,
-            })),
-            ...femalesSortedByAge.map((child) => ({
-                childID: child.childId,
-                giftID: orderByGender[child.childGender]!.shift()!.giftId,
-            })),
-        ],
-    };
+    // const reShuffledOrder: Order = {
+    //     presentingGifts: [
+    //         ...malesSortedByAge.map((child) => ({
+    //             childID: child.childId,
+    //             giftID: orderByGender[child.childGender]!.shift()!.giftId,
+    //         })),
+    //         ...femalesSortedByAge.map((child) => ({
+    //             childID: child.childId,
+    //             giftID: orderByGender[child.childGender]!.shift()!.giftId,
+    //         })),
+    //     ],
+    // };
 
-    const unfoldedReShuffledOrder = reShuffledOrder.presentingGifts.map((gift) => {
-        const child = childrenMap[gift.childID]!;
-        const prize = prizesMap[gift.giftID]!;
+    // const unfoldedReShuffledOrder = reShuffledOrder.presentingGifts.map((gift) => {
+    //     const child = childrenMap[gift.childID]!;
+    //     const prize = prizesMap[gift.giftID]!;
 
-        return {
-            childId: child.id,
-            childAge: child.age,
-            childGender: child.gender,
-            giftId: prize.id,
-            giftPrice: prize.price,
-            giftType: prize.type,
-        };
-    });
+    //     return {
+    //         childId: child.id,
+    //         childAge: child.age,
+    //         childGender: child.gender,
+    //         giftId: prize.id,
+    //         giftPrice: prize.price,
+    //         giftType: prize.type,
+    //     };
+    // });
 
-    console.table(unfoldedReShuffledOrder);
+    // console.table(unfoldedReShuffledOrder);
 
-    return reShuffledOrder;
+    // return reShuffledOrder;
 }
