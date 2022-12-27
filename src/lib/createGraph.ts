@@ -1,4 +1,4 @@
-import { data } from "../seed/map";
+import { childrens } from "../seed/childrens";
 import { GraphNode, WeightedGraph } from "./graph";
 import { isMoveInSnow } from "./isMoveInSnow";
 
@@ -35,7 +35,7 @@ export function createGraph() {
         });
     });
 
-    let children = [...data.children];
+    let children = [...childrens];
 
     const snowChildren = children.filter((child) => isMoveInSnow(child));
     const cleanChildren = children.filter((child) => !isMoveInSnow(child));

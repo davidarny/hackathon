@@ -1,6 +1,5 @@
-import { data } from "../seed/map";
+import { prizes } from "../seed/prizes";
 import { Bag } from "../types/Bag";
-import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { StackOfBags } from "../types/StackOfBags";
 import { loadBag } from "./loadBag";
@@ -11,7 +10,7 @@ interface RunParams {
     stackOfBags: StackOfBags;
     currentBag: Bag;
     moves: Move[];
-    usedGifts: GiftId[];
+    usedGifts: number[];
 }
 
 export function buildRoute({ children, stackOfBags, currentBag, moves, usedGifts }: RunParams) {
@@ -44,7 +43,7 @@ export function buildRoute({ children, stackOfBags, currentBag, moves, usedGifts
 
     moves.push({ x: 0, y: 0 });
 
-    if (usedGifts.length !== data.gifts.length) {
+    if (usedGifts.length !== prizes.length) {
         currentBag = [];
         stackOfBags.push([]);
         loadBag(currentBag, usedGifts);

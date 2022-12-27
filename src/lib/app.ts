@@ -1,6 +1,5 @@
-import { data } from "../seed/map";
+import { childrens } from "../seed/childrens";
 import { Bag } from "../types/Bag";
-import { GiftId } from "../types/Gift";
 import { Move } from "../types/Move";
 import { Route } from "../types/Route";
 import { StackOfBags } from "../types/StackOfBags";
@@ -13,7 +12,7 @@ export class App {
     private readonly moves: Move[] = [];
     private readonly stackOfBags: StackOfBags = [[]];
 
-    private readonly usedGifts: GiftId[] = [];
+    private readonly usedGifts: number[] = [];
 
     private currentBag: Bag = [];
 
@@ -21,7 +20,7 @@ export class App {
     // private readonly cleanChildren = data.children.filter((child) => !isChildInSnow(child));
 
     private get children(): Move[] {
-        const values: Move[] = [...data.children];
+        const values: Move[] = [...childrens];
         const startPoint = { x: 0, y: 0 };
         sortByDistance(values, startPoint);
         const orderedValues = sortByWeight(values);

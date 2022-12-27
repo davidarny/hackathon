@@ -9,7 +9,7 @@ interface OrderItem {
     childID: number;
 }
 
-const MAX_COST = 100_000;
+const MAX_COST = 50_000;
 let currentCost = 0;
 
 const result: OrderItem[] = [];

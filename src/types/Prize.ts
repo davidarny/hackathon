@@ -1,20 +1,17 @@
 export type PrizeType =
-    | "constructors"
-    | "dolls"
-    | "radio_controlled_toys"
-    | "toy_vehicles"
-    | "board_games"
-    | "outdoor_games"
-    | "playground"
-    | "soft_toys"
-    | "computer_games"
-    | "sweets"
-    | "books"
-    | "pet"
-    | "clothes";
+    | "educational_games"
+    | "music_games"
+    | "bath_toys"
+    | "bike"
+    | "paints"
+    | "casket"
+    | "soccer_ball"
+    | "toy_kitchen";
 
 export interface Prize {
     id: number;
+    weight: number;
+    volume: number;
     type: PrizeType;
     price: number;
 }

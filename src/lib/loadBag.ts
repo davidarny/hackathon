@@ -1,14 +1,13 @@
 import { MAX_VOLUME, MAX_WEIGHT } from "../constants/app";
-import { data } from "../seed/map";
+import { prizes } from "../seed/prizes";
 import { Bag } from "../types/Bag";
-import { GiftId } from "../types/Gift";
 import { sortGifts } from "./sortGifts";
 
-export function loadBag(bag: Bag, usedGifts: GiftId[]) {
+export function loadBag(bag: Bag, usedGifts: number[]) {
     let currentWeight = 0;
     let currentVolume = 0;
 
-    data.gifts
+    prizes
         .filter((gift) => !usedGifts.some((usedGift) => usedGift === gift.id))
         .forEach((gift) => {
             if (currentWeight + gift.weight <= MAX_WEIGHT && currentVolume + gift.volume <= MAX_VOLUME) {
@@ -23,7 +22,7 @@ export function loadBag(bag: Bag, usedGifts: GiftId[]) {
         const unusedVolume = MAX_VOLUME - currentVolume;
 
         if (unusedWeight > 0 && unusedVolume > 0) {
-            const filteredGifts = data.gifts.filter(
+            const filteredGifts = prizes.filter(
                 (gift) => !usedGifts.concat(bag).some((usedGift) => usedGift === gift.id)
             );
             const suitableGift = filteredGifts.find(

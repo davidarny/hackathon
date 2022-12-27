@@ -1,3 +1,1 @@
-import { GiftId } from "./Gift";
-
-export type Bag = GiftId[];
+export type Bag = number[];
